@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hasan's 1st Birthday — RSVP</title>
 
-<!-- WhatsApp / social link preview.
-     IMPORTANT: og:image must be an ABSOLUTE url. Replace lubeina below. -->
+<!-- WhatsApp / social link preview. og:image must stay an ABSOLUTE url. -->
 <meta property="og:title" content="You're invited to Hasan's 1st Birthday ⚽">
 <meta property="og:description" content="Saturday, 1st August · 8:30 PM · Fakhri Markaz, Basement. Tap to RSVP.">
 <meta property="og:image" content="https://lubeina.github.io/hasan-rsvp/invite-card.jpg">
@@ -70,10 +69,10 @@
   }
   .poster{
     width:100%;
-    max-height:46vh;          /* never let the image swallow the screen */
-    object-fit:cover;
-    object-position:top;      /* keep the title + crest, trim from the bottom */
+    max-height:58vh;          /* keeps the RSVP buttons near the fold */
+    object-fit:contain;       /* show the whole poster - nothing cropped */
     height:auto;display:block;
+    background:#6CABDD;       /* matches the poster edge if letterboxed */
   }
   .when{
     background:var(--cream);border-bottom:1px solid #DCE8F3;
