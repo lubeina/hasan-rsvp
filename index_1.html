@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hasan's 1st Birthday — RSVP</title>
+
+<!-- WhatsApp / social link preview. og:image must stay an ABSOLUTE url. -->
+<meta property="og:title" content="You're invited to Hasan's 1st Birthday ⚽">
+<meta property="og:description" content="Saturday, 1st August · 8:30 PM · Fakhri Markaz, Basement. Tap to RSVP.">
+<meta property="og:image" content="https://lubeina.github.io/hasan-rsvp/invite-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lubeina.github.io/hasan-rsvp/invite-card.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@600&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#6CABDD;        /* Man City sky blue */
+    --sky-deep:#3B8FCB;
+    --navy:#1C2C5B;       /* City navy */
+    --navy-ink:#101B3B;
+    --white:#FFFFFF;
+    --cream:#F3F8FC;
+    --gold:#D4A548;
+    --ok:#1E8E5A;
+    --stop:#C0405A;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Barlow',system-ui,sans-serif;
+    color:var(--navy-ink);
+    min-height:100vh;
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:18px 12px 36px;
+    background:
+      linear-gradient(118deg,
+        var(--sky-deep) 0%, var(--sky-deep) 24%,
+        var(--sky) 24%, var(--sky) 46%,
+        #8FC4E6 46%, #8FC4E6 70%,
+        var(--sky) 70%, var(--sky) 100%);
+    background-attachment:fixed;
+  }
+  /* halftone dot corners, echoing the invite */
+  body::before,body::after{
+    content:"";position:fixed;width:190px;height:190px;pointer-events:none;
+    background-image:radial-gradient(var(--navy) 1.7px, transparent 1.8px);
+    background-size:14px 14px;opacity:.20;
+  }
+  body::before{top:0;left:0;-webkit-mask-image:linear-gradient(145deg,#000 20%,transparent 65%);mask-image:linear-gradient(145deg,#000 20%,transparent 65%)}
+  body::after{bottom:0;right:0;-webkit-mask-image:linear-gradient(-35deg,#000 20%,transparent 65%);mask-image:linear-gradient(-35deg,#000 20%,transparent 65%)}
+
+  .card{
+    position:relative;z-index:2;width:100%;max-width:460px;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(7px);
+    border-radius:var(--radius);
+    box-shadow:0 26px 70px rgba(16,27,59,.30);
+    overflow:hidden;
+  }
+  .top{
+    background:var(--navy);
+    line-height:0;
+  }
+  .poster{
+    display:block;
+    width:100%;               /* fill the card edge-to-edge, no side gaps */
+    height:auto;              /* keep the poster's own aspect ratio */
+  }
+  .when{
+    background:var(--cream);border-bottom:1px solid #DCE8F3;
+    padding:14px 22px;text-align:center;
+  }
+  .when p{font-weight:600;font-size:1.02rem;line-height:1.7;color:var(--navy)}
+  .when .hijri{color:#5C6B92;font-weight:500;font-size:.92rem}
+
+  .body{padding:20px 22px 24px}
+  .greet{
+    font-family:'Archivo Black',sans-serif;font-size:1.28rem;
+    color:var(--navy);text-align:center;line-height:1.35;
+  }
+  .greet .who{color:var(--sky-deep)}
+  .ask{
+    text-align:center;color:#556289;margin:7px 0 16px;
+    font-size:.95rem;font-weight:500;
+  }
+
+  .choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .opt{
+    border:2px solid #D3E1EE;background:#fff;border-radius:14px;
+    padding:16px 10px;text-align:center;cursor:pointer;
+    font-weight:700;font-size:1rem;color:var(--navy);
+    transition:transform .14s ease, border-color .14s, background .14s, box-shadow .14s;
+  }
+  .opt .ico{display:block;font-size:1.55rem;margin-bottom:5px;line-height:1}
+  .opt:hover{transform:translateY(-2px)}
+  .opt:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+  .opt[aria-pressed="true"][data-v="yes"]{
+    border-color:var(--ok);background:#E9F7F0;box-shadow:0 6px 18px rgba(30,142,90,.20)}
+  .opt[aria-pressed="true"][data-v="no"]{
+    border-color:var(--stop);background:#FCEDF0;box-shadow:0 6px 18px rgba(192,64,90,.18)}
+
+  .send{
+    width:100%;padding:16px;border:0;border-radius:14px;cursor:pointer;
+    background:linear-gradient(135deg,var(--navy) 0%,#2E4488 100%);
+    color:#fff;font-family:'Archivo Black',sans-serif;font-size:1rem;
+    letter-spacing:.03em;box-shadow:0 10px 26px rgba(28,44,91,.32);
+    transition:transform .14s ease, opacity .14s;
+  }
+  .send:hover:not(:disabled){transform:translateY(-2px)}
+  .send:disabled{opacity:.42;cursor:not-allowed;box-shadow:none}
+  .send:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+  .done{padding:44px 26px;text-align:center}
+  .done[hidden]{display:none}
+  .done .mark{
+    width:74px;height:74px;margin:0 auto 16px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.1rem;color:#fff;
+  }
+  .done.in .mark{background:linear-gradient(135deg,var(--ok),#27B073)}
+  .done.out .mark{background:linear-gradient(135deg,var(--stop),#DD6480)}
+  .done h2{font-family:'Archivo Black',sans-serif;color:var(--navy);font-size:1.4rem;margin-bottom:8px}
+  .done p{color:#5C6B92;font-weight:500;line-height:1.6}
+  .again{
+    margin-top:18px;background:none;border:0;color:var(--sky-deep);
+    font-weight:700;cursor:pointer;text-decoration:underline;font-size:.9rem;
+  }
+  .foot{
+    text-align:center;padding:14px;background:var(--cream);
+    color:#8A96B4;font-size:.78rem;font-weight:500;border-top:1px solid #DCE8F3;
+  }
+  .viewinv{color:var(--sky-deep);font-weight:700;text-decoration:none}
+  .viewinv:hover{text-decoration:underline}
+  @media (max-width:420px){
+    .name{font-size:3.3rem}
+    .sub{font-size:1.25rem}
+    .choice{gap:9px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+</style>
+</head>
+<body>
+<main class="card">
+
+  <header class="top">
+    <img class="poster" src="invite.jpg"
+         alt="You are invited to Hasan's 1st Birthday — Manchester City themed invitation.">
+  </header>
+
+  <section class="when">
+    <p>
+      Saturday, 1<sup>st</sup> August &nbsp;·&nbsp; 8:30 PM<br>
+      <span class="hijri">18<sup>th</sup> Safar-al-Muzaffar</span><br>
+      Fakhri Markaz, Basement
+    </p>
+  </section>
+
+  <!-- RSVP -->
+  <section class="body" id="form">
+    <h1 class="greet">Ahlan, <span class="who" id="who">friend</span> 👋</h1>
+    <p class="ask">Will you be joining us?</p>
+
+    <div class="choice" role="group" aria-label="Will you attend?">
+      <button class="opt" data-v="yes" aria-pressed="false">
+        <span class="ico" aria-hidden="true">⚽</span>Yes, we&rsquo;ll be there
+      </button>
+      <button class="opt" data-v="no" aria-pressed="false">
+        <span class="ico" aria-hidden="true">😔</span>Sorry, can&rsquo;t make it
+      </button>
+    </div>
+
+    <button class="send" id="send" disabled>Send my RSVP</button>
+  </section>
+
+  <!-- Confirmation -->
+  <section class="done" id="done" hidden>
+    <div class="mark" id="mark" aria-hidden="true">✓</div>
+    <h2 id="doneTitle">RSVP received</h2>
+    <p id="doneMsg"></p>
+    <button class="again" id="again">Change my answer</button>
+  </section>
+
+  <footer class="foot">
+    Kindly reply by 25<sup>th</sup> July &nbsp;·&nbsp;
+    <a href="invite.jpg" target="_blank" rel="noopener" class="viewinv">View invite</a>
+  </footer>
+</main>
+
+<script>
+/* ============================================================
+   CONFIG — paste your Google Form details here (see SETUP.md)
+   ============================================================ */
+const FORM = {
+  id: "1FAIpQLSdaxLWhZwfVW1pZu03s33JQBYyGd47HGy0MUVEXjTkd-QahrA",
+  fields: {
+    name:      "entry.677198442",    // Q1  Name
+    attending: "entry.1677038694",   // Q2  Attending
+    men:       "entry.462285402",    // Q3  Men
+    women:     "entry.1898975296",   // Q4  Women
+    kids12up:  "entry.1714051118",   // Q5  Children 12 and over
+    kidsUnder: "entry.2129534595",   // Q6  Children under 12
+    total:     "entry.1035532311"    // Q7  Total
+  }
+};
+
+/* ---------- read the guest from the link ---------- */
+const q = new URLSearchParams(location.search);
+const guest = {
+  name: (q.get("g") || "").replace(/_/g, " ").trim(),
+  m:  +q.get("m")  || 0,
+  f:  +q.get("f")  || 0,
+  cp: +q.get("cp") || 0,
+  cm: +q.get("cm") || 0
+};
+guest.total = guest.m + guest.f + guest.cp + guest.cm;
+
+const $ = id => document.getElementById(id);
+const nice = s => s.toLowerCase().replace(/\b[a-z]/g, c => c.toUpperCase());
+
+if (guest.name) $("who").textContent = nice(guest.name);
+
+let attending = null;
+
+/* yes / no */
+document.querySelectorAll(".opt").forEach(b => {
+  b.addEventListener("click", () => {
+    attending = b.dataset.v === "yes";
+    document.querySelectorAll(".opt").forEach(o =>
+      o.setAttribute("aria-pressed", String(o === b)));
+    $("send").disabled = false;
+  });
+});
+
+/* submit → Google Form.
+   The headcount still goes through, taken from the guest's link (i.e. your
+   master sheet), so the Sheet keeps the numbers for the thaal maths. */
+$("send").addEventListener("click", () => {
+  const btn = $("send");
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+
+  const body = new URLSearchParams();
+  body.append(FORM.fields.name,      guest.name || "(no name in link)");
+  body.append(FORM.fields.attending, attending ? "Yes" : "No");
+  body.append(FORM.fields.men,       attending ? guest.m     : 0);
+  body.append(FORM.fields.women,     attending ? guest.f     : 0);
+  body.append(FORM.fields.kids12up,  attending ? guest.cp    : 0);
+  body.append(FORM.fields.kidsUnder, attending ? guest.cm    : 0);
+  body.append(FORM.fields.total,     attending ? guest.total : 0);
+
+  const url = `https://docs.google.com/forms/d/e/${FORM.id}/formResponse`;
+
+  /* no-cors: the POST lands in the Sheet; the browser just can't read the reply */
+  fetch(url, { method:"POST", mode:"no-cors", body })
+    .catch(() => {})
+    .finally(showDone);
+});
+
+function showDone(){
+  $("form").hidden = true;
+  const d = $("done");
+  d.hidden = false;
+  d.className = "done " + (attending ? "in" : "out");
+  $("mark").textContent = attending ? "✓" : "✕";
+  $("doneTitle").textContent = attending ? "See you there! ⚽" : "We’ll miss you";
+  $("doneMsg").innerHTML = attending
+    ? `Saturday, 1<sup>st</sup> August · 8:30 PM<br>Fakhri Markaz, Basement.`
+    : `Thank you for letting us know — you’ll be missed.`;
+}
+
+$("again").addEventListener("click", () => {
+  $("done").hidden = true;
+  $("form").hidden = false;
+  const b = $("send");
+  b.textContent = "Send my RSVP";
+  b.disabled = attending === null;
+});
+</script>
+</body>
+</html>
