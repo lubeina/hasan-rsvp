@@ -257,6 +257,20 @@ if (guest.total > 1) {
 
 let attending = null;
 
+/* ---------- remember their answer across visits ----------
+   Keyed per guest, so a shared phone still works.            */
+const KEY = "hasan_rsvp_" + (guest.name || "anon").replace(/\s+/g, "_");
+let prior = null;
+try { prior = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+
+function remember(){
+  try {
+    localStorage.setItem(KEY, JSON.stringify({
+      attending, at: new Date().toISOString()
+    }));
+  } catch (e) {}   /* private mode etc - not fatal, just don't persist */
+}
+
 /* yes / no */
 document.querySelectorAll(".opt").forEach(b => {
   b.addEventListener("click", () => {
@@ -270,7 +284,11 @@ document.querySelectorAll(".opt").forEach(b => {
 /* submit → Google Form.
    The headcount still goes through, taken from the guest's link (i.e. your
    master sheet), so the Sheet keeps the numbers for the thaal maths. */
+let sending = false;
 $("send").addEventListener("click", () => {
+  if (sending || attending === null) return;   /* block double-taps */
+  sending = true;
+
   const btn = $("send");
   btn.disabled = true;
   btn.textContent = "Sending…";
@@ -289,27 +307,48 @@ $("send").addEventListener("click", () => {
   /* no-cors: the POST lands in the Sheet; the browser just can't read the reply */
   fetch(url, { method:"POST", mode:"no-cors", body })
     .catch(() => {})
-    .finally(showDone);
+    .finally(() => { remember(); showDone(true); });
 });
 
-function showDone(){
+function showDone(justSent){
   $("form").hidden = true;
   const d = $("done");
   d.hidden = false;
   d.className = "done " + (attending ? "in" : "out");
   $("mark").textContent = attending ? "✓" : "✕";
-  $("doneTitle").textContent = attending ? "See you there! ⚽" : "We’ll miss you";
-  $("doneMsg").innerHTML = attending
-    ? `Saturday, 1<sup>st</sup> August · 8:30 PM<br>Fakhri Markaz, Basement.`
-    : `Thank you for letting us know — you’ll be missed.`;
+
+  if (justSent) {
+    $("doneTitle").textContent = attending ? "See you there! ⚽" : "We’ll miss you";
+    $("doneMsg").innerHTML = attending
+      ? `Saturday, 1<sup>st</sup> August · 8:30 PM<br>Fakhri Markaz, Basement.`
+      : `Thank you for letting us know — you’ll be missed.`;
+  } else {
+    /* returning visitor - they already replied */
+    $("doneTitle").textContent = attending ? "You’re coming! ⚽" : "You replied: can’t make it";
+    $("doneMsg").innerHTML = attending
+      ? `You’ve already RSVP’d.<br>Saturday, 1<sup>st</sup> August · 8:30 PM · Fakhri Markaz, Basement.`
+      : `You’ve already let us know you can’t make it.`;
+  }
+  $("again").textContent = "Change my answer";
+}
+
+/* if they've replied before, show that straight away */
+if (prior && typeof prior.attending === "boolean") {
+  attending = prior.attending;
+  showDone(false);
 }
 
 $("again").addEventListener("click", () => {
   $("done").hidden = true;
   $("form").hidden = false;
+  sending = false;                     /* allow a fresh submit */
+  /* pre-select whatever they chose last time */
+  document.querySelectorAll(".opt").forEach(o =>
+    o.setAttribute("aria-pressed",
+      String((o.dataset.v === "yes") === attending)));
   const b = $("send");
-  b.textContent = "Send my RSVP";
-  b.disabled = attending === null;
+  b.textContent = "Update my RSVP";
+  b.disabled = false;
 });
 </script>
 </body>
