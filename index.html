@@ -85,6 +85,13 @@
     color:var(--navy);text-align:center;line-height:1.35;
   }
   .greet .who{color:var(--sky-deep)}
+  .seats{
+    text-align:center;margin:10px auto 0;max-width:max-content;
+    background:var(--cream);border:1px solid #DCE8F3;border-radius:999px;
+    padding:6px 16px;font-size:.86rem;font-weight:600;color:var(--navy);
+  }
+  .seats[hidden]{display:none}
+  .seats b{color:var(--sky-deep)}
   .ask{
     text-align:center;color:#556289;margin:7px 0 16px;
     font-size:.95rem;font-weight:500;
@@ -166,6 +173,7 @@
   <!-- RSVP -->
   <section class="body" id="form">
     <h1 class="greet">Ahlan, <span class="who" id="who">friend</span> 👋</h1>
+    <p class="seats" id="seats" hidden></p>
     <p class="ask">Will you be joining us?</p>
 
     <div class="choice" role="group" aria-label="Will you attend?">
@@ -226,6 +234,15 @@ const $ = id => document.getElementById(id);
 const nice = s => s.toLowerCase().replace(/\b[a-z]/g, c => c.toUpperCase());
 
 if (guest.name) $("who").textContent = nice(guest.name);
+
+/* show how many this invite covers, taken from the link */
+if (guest.total > 1) {
+  $("seats").innerHTML = `You and your family (<b>${guest.total}</b>) are invited`;
+  $("seats").hidden = false;
+} else if (guest.total === 1) {
+  $("seats").innerHTML = `This invite is for <b>you</b>`;
+  $("seats").hidden = false;
+}
 
 let attending = null;
 
